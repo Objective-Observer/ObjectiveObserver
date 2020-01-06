@@ -1,0 +1,34 @@
+name = test1                        // any name for this test case
+population = 10                    // number of people
+contentcount = 5                   // how many contents are generated
+opinions = 70                      // how many opinions are ghenerated ion total
+iteration = 10                      // how many tries are generated for 1 person or content
+neutral=0.2                         // abs(weight)<neutral means neither approve nor disapprove
+propertycount = 4
+property: OBJECTIVE                 // objectiveness property must come first
+support = 0.6
+oppose = 0.0
+correlation = -0.1, 0.1             // if some correlations are missing, default is 0
+property: fidesz                    // optional
+support = 0.4
+oppose = 0.4
+correlation = -0.5
+property: ellenzek
+support = 0.3
+oppose = 0.4
+correlation = 0                     // a correlation row MUST be there
+property: RANDOMNESS                // last property must be randomness
+support = 0.1
+oppose = 0.1
+CONTENT
+content_supp = 0.4                  // objectivity of content
+content_opp = 0.1
+content_corr = 0, 0
+content_supp = 0.5
+content_opp = 0.1
+content_corr = -0.7
+content_supp = 0.2
+content_opp = 0.3
+content_corr = 0
+content_supp = 0                    // randomness: not used for content
+content_opp = 0
