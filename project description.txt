@@ -1,0 +1,125 @@
+THE OBJECTIVE OBSERVER PROJECT
+
+Project goal
+
+The goal is to develop an algorithm that evaluates people who express their opinion 
+on political issues on an online forum. Let us call this the objectivity-algorithm. 
+This algorithm should be able to make difference between two main kinds of people.
+The first kind are people who often form objective, reliable opinions, based on facts 
+and best knowledge. We call them Objective Observers. The second kind of people are 
+those who often form unreliable opinions, based on group-think, identity, following 
+some authority. These people make their judgement based on their identity: if the 
+content to be judged belongs to their side, then they form a favourable opinion, but 
+if it belongs to the "enemy" side, their opinion will be unfavourable.
+
+Why is it important to recognize Objective Observers among people?
+
+Because this will enable online governance, fair and beneficial for the community, 
+in many segments of life. 
+Let us consider one example:
+How do we know if a proposed change in the national healthcare system is beneficial 
+or not? Most of us don't have enough expertise to make a good judgement. We would like 
+to have people to make this decision who understand the issue and are able to do 
+the evaluation to our common benefit. But who should these people be? Many "experts" 
+are not reliable because their opinion is heavily influenced by their political 
+preference. Therefore, we need a way to select those people who are Objective Observers 
+(with the necessary knowledge of the issue at hand).
+
+How should this project achieve the goal?
+
+This is a volunteer-based project, anyone can join (please contact foris64@gmail.com 
+if you are interested - Zoltan Foris). 
+We plan the following milestones.
+1. Develop a simulation that delivers a set of simulated people and opinions. 
+   (this is done in V1)
+2. Develop various algorithms that attempt to find out, based on the simulated opinions, 
+   who are the Objective Observers in the simulated group of people.
+3. Try various parameters of the simulation to see which algorithm performs best when 
+   facing very different populations of people and opinions.
+4. Make the project public on various channels, to facilitate the incorporation of
+   the algorithm in portals, social platforms, community platforms.
+5. If we manage to aquire real data, try to evaluate the software on real opinions.
+
+How can I join?
+
+You can join the project by writing a mail to Zoltan Foris (foris64@gmail.com).
+Upon joining you will receive the updates, and will have an opportunity to take part
+in discussions. If you want to contribute, you can volunteer for any open task. 
+
+Is there any task available now?
+
+Yes. There are two tasks ready for anyone to complete. Both tasks should be completed 
+by a number of contributors. (Software development should be done in Python 3.)
+1. Test the simulation software, to see if there are any bugs, limitations.
+2. Incorporate the simulation module in your own code, which uses only the simulated 
+   opinions (plus it knows the number of people, contents) and performs the selection
+   of objective observers. Perform a few measurements with different simulation parameters
+   to evaulate the selection module.
+
+
+How does the simulation module work?
+
+You can run the simulation in this way: Run simul.py simparam.txt   (you need a Python 3 environment.)
+In the simparam.txt file we provide the parameters of the simulation:
+
+population = 10                  // number of people to be simulated
+contentcount = 5                 // how many contents are generated
+opinions = 70                    // how many opinions are generated ion total
+iteration = 10                   // usually 10, this influences the accuracy of simulation
+neutral=0.2                      // usually 0.2,  must be at least 0.05, max 0.5, a technical parameter
+propertycount = 4		 // how many properties a person has
+property: OBJECTIVE              // the first property defines how objevtive this person is 
+                                    on a scale -1 to 1, 1 meaning totally objective person
+support = 0.6			 // ratio of people in the population who have significant positive 
+                                    value for this property
+oppose = 0.0                     // ratio of people in the population who have significant negative
+                                    value for this property
+correlation = -0.1, 0.1          // how this property correlates with other properties
+property: republican             // next property, this can be anything, for example the extent this
+                                    person supports republicans 
+support = 0.4                    // the sum of support + oppose should be no more than 1
+oppose = 0.4
+correlation = -0.5               // being republican may anti-correlate with being democrat
+
+This is how it works:
+1.
+The simul.py code will generate 10 people with randomly assigned properties, and these properties will
+more or less satisfy the distribution criteria given in simparam.txt.
+2.
+Then the module randomly generates 5 contents. Contents have the same properties as people (except the last
+property, which is "randomness", for people only.)
+3. 
+Then the module randomly pairs a person with a content. The person makes an opinion on the content. The
+opinion is based on shared properties. If both the person and the content have the property 
+"republican" with high positive value, then the opinion is more favourable (closer to 1).
+Our opinion model is this:  Opinion = Sum over properties (Person property * content property) + random number.
+4. 
+The output is the list of opinions. Plus the module prints out what were the simulation targets, and what are
+the actual measures. Below we see, for example, that for property 0 target was 0.6 support, but the actual
+value we got in the simulation is 0.5 support. The correlation target between properties 0 and 3 was 0, the 
+actual correlation was 0.03.
+PEOPLE actual: 10
+property 0  support target = 0.6 support=0.5
+property 0   oppose target = 0.0  oppose=0.3
+Correlation target for 0,1 = -0.1  correlation=0.06
+Correlation target for 0,2 = 0.1  correlation=0.5
+Correlation target for 0,3 = 0  correlation=0.03
+property 1  support target = 0.4 support=0.3
+property 1   oppose target = 0.4  oppose=0.6
+Correlation target for 1,2 = -0.5  correlation=-0.57
+
+
+I am not sure this is feasible. How is selection supposed to work?
+
+I have a basic idea how to prepare the first version of a selection module. (You can have
+completely different and much better ideas how to do it.)
+1. We do a clustering of people based on their opinions. We cluster people together
+   who have similar opinions.
+2. We may get two clusters, for which typical opinions are anticorrelated (the correlation between
+   the clusters' opinions is negative.) This means we identify the republican and the democrat 
+   cluster, in which people are not very objective, becuase they have big weight on "republican"
+   or "democrat" property when forming their opinion.
+3. We need to identify 1 cluster, which is not anticorrelated to any other cluster. The biggest,
+   and most homogenous cluster of this type is the one that contains Objective Observers.
+4. Whether this works is very easy to test when this code is developed and run over various
+   simulations.
